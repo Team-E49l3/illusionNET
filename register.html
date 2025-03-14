@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Ocean Marketplace</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://i.gifer.com/VgO.gif') no-repeat center center/cover;
+            color: #ffffff;
+            position: relative;
+        }
+        
+        .register-container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.5);
+            text-align: center;
+            z-index: 1;
+            width: 400px;
+        }
+        .register-container img {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+        .register-container h2 {
+            color: #ff0000;
+        }
+        input {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #1e1e2f;
+            color: #ffffff;
+            border: 1px solid #ff0000;
+            font-size: 16px;
+        }
+        input[readonly] {
+            background: #333;
+            user-select: none;
+        }
+        button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        button:disabled {
+            background: grey;
+            cursor: not-allowed;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .terms {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .terms input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .terms label a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+        .captcha-container {
+            margin-top: 10px;
+        }
+        .captcha-img {
+            display: block;
+            margin: 10px auto;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <img src="https://static.vecteezy.com/system/resources/previews/025/463/773/non_2x/hacker-logo-design-a-mysterious-and-dangerous-hacker-illustration-vector.jpg" alt="Logo">
+        <h2>🔒 Secure Registration</h2>
+        <form onsubmit="return validateForm()">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <div id="password-error" class="error"></div>
+
+            <label for="twofa-code">Enter 2FA Code:</label>
+            <div class="captcha-container">
+                <img id="captcha-img" class="captcha-img" alt="2FA Code">
+            </div>
+            <input type="text" id="twofa-code" placeholder="Enter the code" required>
+
+            <div class="terms">
+                <input type="checkbox" id="terms-checkbox" onclick="toggleRegisterButton()">
+                <label for="terms-checkbox">I accept the <a href="#">Terms & Conditions</a></label>
+            </div>
+            <div class="terms">
+                <input type="checkbox" id="policy-checkbox" onclick="toggleRegisterButton()">
+                <label for="policy-checkbox">I accept the <a href="#">Privacy Policy</a></label>
+            </div>
+
+            <button type="submit" id="register-btn" disabled>Register</button>
+        </form>
+    </div>
+
+    <script>
+        function generate2FACode() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let code = '';
+            for (let i = 0; i < 8; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            
+            // Create a canvas to render the code as an image
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = 150;
+            canvas.height = 50;
+            
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText(code, 20, 30);
+            
+            document.getElementById("captcha-img").src = canvas.toDataURL("image/png");
+            document.getElementById("captcha-img").setAttribute("data-code", code);
+        }
+
+        function toggleRegisterButton() {
+            document.getElementById("register-btn").disabled = 
+                !(document.getElementById("terms-checkbox").checked && 
+                  document.getElementById("policy-checkbox").checked);
+        }
+        
+        function validateForm() {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const enteredCode = document.getElementById("twofa-code").value;
+            const generatedCode = document.getElementById("captcha-img").getAttribute("data-code");
+            const errorDiv = document.getElementById("password-error");
+            
+            if (password !== confirmPassword) {
+                errorDiv.innerText = "❌ Passwords do not match!";
+                return false;
+            } else if (enteredCode !== generatedCode) {
+                errorDiv.innerText = "❌ 2FA Code does not match!";
+                return false;
+            } else {
+                errorDiv.innerText = "";
+                alert("✅ Registration Successful");
+                return true;
+            }
+        }
+
+        generate2FACode();
+    </script>
+</body>
+</html>

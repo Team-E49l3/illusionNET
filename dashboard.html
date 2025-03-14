@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+
+        header {
+            background-color: #1A1A1A;
+            color: #00FF00;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #1F1F1F;
+            padding-top: 50px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar a {
+            display: block;
+            color: #E0E0E0;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #333;
+            color: #00FF00;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #121212;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .table th {
+            background-color: #333;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #1F1F1F;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Admin Dashboard - User Registrations & Logins
+    </header>
+
+    <div class="sidebar">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="manage-users.html">Manage Users</a>
+        <a href="view-reports.html">View Reports</a>
+        <a href="setting.html">Settings</a>
+        <a href="index.html">Logout</a>
+    </div>
+
+    <div class="content">
+        <h2>Manage User Registrations and Logins</h2>
+
+        <h3>User Registrations</h3>
+        <table class="table" id="registration-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>IP Address</th>
+                    <th>Registration Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User registration info will be dynamically populated here -->
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        // Fetching user registration data from the back-end API
+        async function fetchRegistrations() {
+            const response = await fetch('http://localhost:5000/admin/registrations');
+            const data = await response.json();
+
+            if (data.users) {
+                const registrationTable = document.getElementById("registration-table").getElementsByTagName('tbody')[0];
+                registrationTable.innerHTML = ''; // Clear any previous data
+
+                data.users.forEach(user => {
+                    const row = registrationTable.insertRow();
+                    row.innerHTML = `
+                        <td>${user._id}</td>
+                        <td>${user.email}</td>
+                        <td>${user.username}</td>
+                        <td>${user.ip}</td>
+                        <td>${user.registrationDate}</td>
+                    `;
+                });
+            }
+        }
+
+        window.onload = fetchRegistrations;
+        function setupNavigation() {
+    document.querySelectorAll("nav a").forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            window.location.href = this.getAttribute("href");
+        });
+    });
+}
+
+// Run the function when the page loads
+document.addEventListener("DOMContentLoaded", setupNavigation);
+
+   </script>
+
+</body>
+</html>

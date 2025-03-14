@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter the Dark Web</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a; /* Dark background */
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Main Button Styles */
+        .enter-button {
+            background: #000000;
+            color: #f44336; /* Red color for a bold look */
+            padding: 20px 50px;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid #f44336;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, font-size 0.3s ease, background 0.3s ease, color 0.3s ease;
+            text-align: center;
+            margin-bottom: 30px;
+            outline: none;
+        }
+
+        /* Dynamic Button Resize Based on Zoom and Hover Effect */
+        .enter-button:hover {
+            background: #81C784; /* Green color on hover */
+            color: #000000; /* Change text color to black */
+            transform: scale(1.1); /* Zoom In */
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            font-size: 50px;
+            font-weight: bold;
+            color: red;
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+        /* Dangerous Blast Effect */
+        .blast {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0));
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: blast-effect 1s ease-out forwards;
+        }
+
+        @keyframes blast-effect {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+                box-shadow: 0 0 50px red;
+            }
+            100% {
+                width: 500px;
+                height: 500px;
+                opacity: 0;
+                box-shadow: 0 0 100px red;
+            }
+        }
+
+        /* Warning Popup */
+        .warning-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Enter Dark Web Button -->
+    <div class="enter-button" onclick="showWarning()">Enter the Real Dark Web World</div>
+
+    <!-- Warning Popup -->
+    <div class="warning-popup" id="warning-popup">
+        <p><strong>Warning!</strong> You are about to enter the Dark Web, which can be dangerous. Are you sure you want to proceed?</p>
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="countdown" id="countdown-timer">3</div>
+
+    <!-- Dangerous Blast Effect -->
+    <div class="blast" id="blast-effect"></div>
+
+    <script>
+        let countdownTimer;
+        let counter = 3;
+
+        function showWarning() {
+            // Show the warning popup
+            document.getElementById('warning-popup').style.display = 'block';
+
+            // Wait 2 seconds before starting countdown
+            setTimeout(function() {
+                document.getElementById('warning-popup').style.display = 'none'; // Hide the warning popup
+                document.getElementById('countdown-timer').style.display = 'block'; // Show countdown
+                countdown();
+            }, 2000); // 2-second delay
+        }
+
+        function countdown() {
+            // Countdown from 3 to 1
+            countdownTimer = setInterval(function() {
+                document.getElementById('countdown-timer').textContent = counter;
+                counter--;
+                if (counter < 0) {
+                    clearInterval(countdownTimer);
+                    triggerBlastEffect();
+                }
+            }, 1000);
+        }
+
+        function triggerBlastEffect() {
+    // Show the blast effect
+    const blast = document.getElementById('blast-effect');
+    blast.style.display = 'block';
+
+    // After blast effect, check if user is logged in
+    setTimeout(function() {
+        document.getElementById('countdown-timer').style.display = 'none';
+        document.getElementById('blast-effect').style.display = 'none';
+
+        // Check if user is logged in before redirecting
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("⚠️ Access Denied! You must log in first.");
+            window.location.href = "login.html"; // Redirect to login page
+        } else {
+            window.location.href = "marketplace.html"; // Redirect to marketplace if logged in
+        }
+    }, 1000); // Delay after blast animation
+}
+
+    </script>  
+
+</body>
+</html>

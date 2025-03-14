@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #1f1f1f, #333);
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+        nav a:hover, .active {
+            background: #444;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+        .container {
+            margin-top: 80px;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background: #333;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            margin: 5px;
+            background: linear-gradient(135deg, #444, #666);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="manage-users.html">Manage Users</a>
+            <a href="logs.html">Logs</a>
+            <a href="setting.html">Settings</a>
+            <a href="view-reports.html" class="active">View Reports</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>View Reports</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Reported By</th>
+                    <th>Issue</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="report-entries"></tbody>
+        </table>
+    </div>
+    <script>
+        let reports = [
+            { id: 1, reporter: "UserX", issue: "Spam content", status: "Pending" },
+            { id: 2, reporter: "Admin", issue: "Abuse report", status: "Reviewed" }
+        ];
+        
+        function loadReports() {
+            const reportEntries = document.getElementById("report-entries");
+            reportEntries.innerHTML = "";
+            reports.forEach((report, index) => {
+                const row = `<tr>
+                    <td>${report.id}</td>
+                    <td>${report.reporter}</td>
+                    <td>${report.issue}</td>
+                    <td>${report.status}</td>
+                    <td>
+                        <button onclick="resolveReport(${index})">Resolve</button>
+                        <button onclick="deleteReport(${index})">Delete</button>
+                    </td>
+                </tr>`;
+                reportEntries.innerHTML += row;
+            });
+        }
+        
+        function resolveReport(index) {
+            reports[index].status = "Resolved";
+            loadReports();
+        }
+        
+        function deleteReport(index) {
+            if (confirm("Are you sure you want to delete this report?")) {
+                reports.splice(index, 1);
+                loadReports();
+            }
+        }
+        
+        window.onload = loadReports;
+    </script>
+</body>
+</html>

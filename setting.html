@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #1f1f1f;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #ffffff;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            border-bottom: 2px solid #444;
+            padding-bottom: 5px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+        .save-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background: #00aaff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .save-btn:hover {
+            background: #0088cc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Settings</h1>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <!-- <a href="users.html">Users</a> -->
+            <a href="logs.html">Logs</a>
+            <a href="setting.html" class="active">Settings</a>
+        </nav>
+    </header>
+    <main>
+        <section class="settings">
+            <h2>General Settings</h2>
+            <label for="site-title">Site Title:</label>
+            <input type="text" id="site-title" placeholder="Enter site title">
+
+            <label for="admin-email">Admin Email:</label>
+            <input type="email" id="admin-email" placeholder="Enter admin email">
+
+            <label for="timezone">Time Zone:</label>
+            <select id="timezone">
+                <option value="UTC">UTC</option>
+                <option value="IST">IST</option>
+                <option value="EST">EST</option>
+                <option value="PST">PST</option>
+            </select>
+        </section>
+        
+        <section class="security">
+            <h2>Security Settings</h2>
+            <label for="2fa">Enable 2FA:</label>
+            <input type="checkbox" id="2fa">
+
+            <label for="dark-mode">Dark Mode:</label>
+            <input type="checkbox" id="dark-mode" checked>
+
+            <label for="password-reset">Require Password Reset on Next Login:</label>
+            <input type="checkbox" id="password-reset">
+        </section>
+        
+        <section class="performance">
+            <h2>Performance Settings</h2>
+            <label for="cache">Enable Caching:</label>
+            <input type="checkbox" id="cache">
+
+            <label for="compression">Enable Compression:</label>
+            <input type="checkbox" id="compression">
+        </section>
+        
+        <section class="notifications">
+            <h2>Notification Settings</h2>
+            <label for="email-notifications">Email Notifications:</label>
+            <input type="checkbox" id="email-notifications">
+
+            <label for="sms-notifications">SMS Notifications:</label>
+            <input type="checkbox" id="sms-notifications">
+        </section>
+        
+        <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+    </main>
+    <script>
+        function saveSettings() {
+            const settings = {
+                siteTitle: document.getElementById('site-title').value,
+                adminEmail: document.getElementById('admin-email').value,
+                timezone: document.getElementById('timezone').value,
+                enable2FA: document.getElementById('2fa').checked,
+                darkMode: document.getElementById('dark-mode').checked,
+                passwordReset: document.getElementById('password-reset').checked,
+                enableCache: document.getElementById('cache').checked,
+                enableCompression: document.getElementById('compression').checked,
+                emailNotifications: document.getElementById('email-notifications').checked,
+                smsNotifications: document.getElementById('sms-notifications').checked
+            };
+            console.log("Settings Saved:", settings);
+            alert("Settings Saved Successfully!");
+        }
+        function setupNavigation() {
+    document.querySelectorAll("nav a").forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            window.location.href = this.getAttribute("href");
+        });
+    });
+}
+
+// Run the function when the page loads
+document.addEventListener("DOMContentLoaded", setupNavigation);
+
+    </script>
+</body>
+</html>

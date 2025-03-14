@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "login.html";
+            }
+            document.getElementById("username").textContent = localStorage.getItem("username");
+        });
+
+        function logoutUser() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("username");
+            window.location.href = "index.html";
+        }
+    </script>
+</head>
+<body>
+    <h2>Welcome, <span id="username"></span>!</h2>
+    <button onclick="logoutUser()">Logout</button>
+</body>
+</html>

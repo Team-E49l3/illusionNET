@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Terminal Login</title>
+    <style>
+        /* Background with moving code effect */
+        body {
+            font-family: 'Courier New', monospace;
+            background: black;
+            color: #00ff00;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes matrix {
+            0% { transform: translateY(0%); }
+            100% { transform: translateY(-100%); }
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            background: url('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif');
+            opacity: 0.2;
+            animation: matrix 10s linear infinite;
+        }
+
+        .login-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border: 2px solid #00ff00;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0 0 20px #00ff00;
+            border-radius: 10px;
+        }
+
+        .login-container h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            background: black;
+            color: #00ff00;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .login-container input::placeholder {
+            color: #00aa00;
+        }
+
+        .login-container button {
+            background: #00ff00;
+            color: black;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-container button:hover {
+            background: #008000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .captcha-container {
+            margin: 15px 0;
+        }
+
+        #captcha {
+            font-size: 22px;
+            font-weight: bold;
+            background: black;
+            color: #ff0000;
+            padding: 10px;
+            display: inline-block;
+            letter-spacing: 3px;
+            text-decoration: line-through;
+            border-radius: 5px;
+            user-select: none;
+            pointer-events: none;
+            text-shadow: 2px 2px 8px red;
+        }
+
+        .refresh-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <div class="login-container">
+        <h2>🔒 Secure Terminal Access</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username or Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+
+            <div class="captcha-container">
+                <div id="captcha"></div>
+                <button type="button" class="refresh-btn" onclick="generateCaptcha()">↻</button>
+                <input type="text" id="captcha-input" placeholder="Enter CAPTCHA" required>
+                <div id="captcha-error" class="error"></div>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        let captchaText = "";
+
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789@#*$&%!?";
+            captchaText = "";
+            for (let i = 0; i < 6; i++) {
+                captchaText += chars[Math.floor(Math.random() * chars.length)];
+            }
+            document.getElementById("captcha").innerText = captchaText;
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const enteredUsername = document.getElementById("loginUsername").value;
+    const enteredPassword = document.getElementById("loginPassword").value;
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (storedUser && enteredUsername === storedUser.username && enteredPassword === storedUser.password) {
+        // Save login session token
+        localStorage.setItem("token", "authenticated");
+        localStorage.setItem("username", enteredUsername);
+        alert("✅ Login successful! Redirecting...");
+        window.location.href = "site.html"; // Redirect to site.html after login
+    } else {
+        alert("❌ Incorrect username or password!");
+    }
+});
+
+
+        generateCaptcha(); // Generate CAPTCHA on page load
+    </script>
+</body>
+</html>
